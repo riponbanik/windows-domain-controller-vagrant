@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     config.winrm.basic_auth_only = true
 
     config.vm.provider :virtualbox do |v, override|
-        v.linked_clone = true
+        v.linked_clone = false
         v.cpus = 2
         v.memory = 512
         v.customize ["modifyvm", :id, "--vram", 64]
