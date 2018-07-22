@@ -14,7 +14,7 @@ $adDomain = Get-ADDomain
 $domain = $adDomain.DNSRoot
 $domainDn = $adDomain.DistinguishedName
 $usersAdPath = "CN=Users,$domainDn"
-$password = ConvertTo-SecureString -AsPlainText 'HeyH0Password' -Force
+$password = ConvertTo-SecureString -AsPlainText 'Passw0rd' -Force
 
 
 # add the vagrant user to the Enterprise Admins group.
@@ -47,57 +47,57 @@ Set-ADUser `
 
 
 # add John Doe.
-$name = 'john.doe'
-New-ADUser `
-    -Path $usersAdPath `
-    -Name $name `
-    -UserPrincipalName "$name@$domain" `
-    -EmailAddress "$name@$domain" `
-    -GivenName 'John' `
-    -Surname 'Doe' `
-    -DisplayName 'John Doe' `
-    -AccountPassword $password `
-    -Enabled $true `
-    -PasswordNeverExpires $true
-# we can also set properties.
-Set-ADUser `
-    -Identity "CN=$name,$usersAdPath" `
-    -HomePage "https://$domain/~$name"
-# add user to the Domain Admins group.
-Add-ADGroupMember `
-    -Identity 'Domain Admins' `
-    -Members "CN=$name,$usersAdPath"
+# $name = 'john.doe'
+# New-ADUser `
+#     -Path $usersAdPath `
+#     -Name $name `
+#     -UserPrincipalName "$name@$domain" `
+#     -EmailAddress "$name@$domain" `
+#     -GivenName 'John' `
+#     -Surname 'Doe' `
+#     -DisplayName 'John Doe' `
+#     -AccountPassword $password `
+#     -Enabled $true `
+#     -PasswordNeverExpires $true
+# # we can also set properties.
+# Set-ADUser `
+#     -Identity "CN=$name,$usersAdPath" `
+#     -HomePage "https://$domain/~$name"
+# # add user to the Domain Admins group.
+# Add-ADGroupMember `
+#     -Identity 'Domain Admins' `
+#     -Members "CN=$name,$usersAdPath"
 
 
-# add Jane Doe.
-$name = 'jane.doe'
-New-ADUser `
-    -Path $usersAdPath `
-    -Name $name `
-    -UserPrincipalName "$name@$domain" `
-    -EmailAddress "$name@$domain" `
-    -GivenName 'Jane' `
-    -Surname 'Doe' `
-    -DisplayName 'Jane Doe' `
-    -AccountPassword $password `
-    -Enabled $true `
-    -PasswordNeverExpires $true
+# # add Jane Doe.
+# $name = 'jane.doe'
+# New-ADUser `
+#     -Path $usersAdPath `
+#     -Name $name `
+#     -UserPrincipalName "$name@$domain" `
+#     -EmailAddress "$name@$domain" `
+#     -GivenName 'Jane' `
+#     -Surname 'Doe' `
+#     -DisplayName 'Jane Doe' `
+#     -AccountPassword $password `
+#     -Enabled $true `
+#     -PasswordNeverExpires $true
 
 
-echo 'john.doe Group Membership'
-Get-ADPrincipalGroupMembership -Identity 'john.doe' `
-    | Select-Object Name,DistinguishedName,SID `
-    | Format-Table -AutoSize | Out-String -Width 2000
+# echo 'john.doe Group Membership'
+# Get-ADPrincipalGroupMembership -Identity 'john.doe' `
+#     | Select-Object Name,DistinguishedName,SID `
+#     | Format-Table -AutoSize | Out-String -Width 2000
 
-echo 'jane.doe Group Membership'
-Get-ADPrincipalGroupMembership -Identity 'jane.doe' `
-    | Select-Object Name,DistinguishedName,SID `
-    | Format-Table -AutoSize | Out-String -Width 2000
+# echo 'jane.doe Group Membership'
+# Get-ADPrincipalGroupMembership -Identity 'jane.doe' `
+#     | Select-Object Name,DistinguishedName,SID `
+#     | Format-Table -AutoSize | Out-String -Width 2000
 
-echo 'vagrant Group Membership'
-Get-ADPrincipalGroupMembership -Identity 'vagrant' `
-    | Select-Object Name,DistinguishedName,SID `
-    | Format-Table -AutoSize | Out-String -Width 2000
+# echo 'vagrant Group Membership'
+# Get-ADPrincipalGroupMembership -Identity 'vagrant' `
+#     | Select-Object Name,DistinguishedName,SID `
+#     | Format-Table -AutoSize | Out-String -Width 2000
 
 
 echo 'Enterprise Administrators'
