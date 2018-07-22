@@ -1,10 +1,15 @@
+param(
+  [string]$locale="en-US",
+  [string]$timezone="GMT Standard Time"
+)  
+
 # set keyboard layout.
 # NB you can get the name from the list:
 #      [Globalization.CultureInfo]::GetCultures('InstalledWin32Cultures') | Out-GridView
-Set-WinUserLanguageList pt-PT -Force
+Set-WinUserLanguageList $locale -Force
 
 # set the date format, number format, etc.
-Set-Culture pt-PT
+Set-Culture $locale
 
 # set the welcome screen culture and keyboard layout.
 # NB the .DEFAULT key is for the local SYSTEM account (S-1-5-18).
@@ -16,7 +21,7 @@ New-PSDrive -PSProvider Registry -Name HKU -Root HKEY_USERS | Out-Null
 
 # set the timezone.
 # tzutil /l lists all available timezone ids
-& $env:windir\system32\tzutil /s "GMT Standard Time"
+& $env:windir\system32\tzutil /s $timezone
 
 # show window content while dragging.
 Set-ItemProperty -Path 'HKCU:Control Panel\Desktop' -Name DragFullWindows -Value 1

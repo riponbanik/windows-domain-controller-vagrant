@@ -1,6 +1,10 @@
-$domain = 'example.com'
-$netbiosDomain = 'EXAMPLE'
-$safeModeAdminstratorPassword = ConvertTo-SecureString 'HeyH0Password' -AsPlainText -Force
+param(
+  [string]$domain,
+  [string]$netbiosDomain
+)  
+
+# Set safemode password
+$safeModeAdminstratorPassword = ConvertTo-SecureString 'Passw0rd' -AsPlainText -Force
 
 echo 'Installing the AD services and administration tools...'
 Install-WindowsFeature AD-Domain-Services,RSAT-AD-AdminCenter,RSAT-ADDS-Tools                      

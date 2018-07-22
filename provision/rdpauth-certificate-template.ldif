@@ -1,4 +1,4 @@
-dn: CN=RDPAuth,CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=example,DC=com
+dn: CN=RDPAuth,CN=Certificate Templates,CN=Public Key Services,CN=Services,CN=Configuration,DC=lab,DC=local
 changetype: add
 objectClass: top
 objectClass: pKICertificateTemplate
@@ -18,7 +18,7 @@ objectGUID:: IHNK8yKOiU2W42Ga6NKiHg==
 flags: 131680
 revision: 100
 objectCategory: 
- CN=PKI-Certificate-Template,CN=Schema,CN=Configuration,DC=example,DC=com
+ CN=PKI-Certificate-Template,CN=Schema,CN=Configuration,DC=lab,DC=local
 pKIDefaultKeySpec: 1
 pKIKeyUsage:: oAA=
 pKIMaxIssuingDepth: 0

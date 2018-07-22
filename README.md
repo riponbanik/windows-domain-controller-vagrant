@@ -1,24 +1,9 @@
 
-This is an example on how to create a Windows Domain Controller using Vagrant and PowerShell.
+This will crate Windows 2016 Domain Controller using Vagrant and PowerShell.
 
-This also shows how to add a Computer to an existing domain using PowerShell.
+Windows 2016 base box can be downloaded from [vagrant cloud](https://app.vagrantup.com/jacqinthebox/boxes/windowsserver2016)
 
-This will create an `example.com` Active Directory Domain Forest.
-
-This will also install a Certification Authority with a GPO to automatically enroll
-computers with a certificate signed by the trusted domain CA, Remote Desktop users
-will therefore see and use trusted certificates.  
-
-This setup will use the following static IP addresses:
-
-| IP           | Hostname                  | Description                |
-|--------------|---------------------------|----------------------------|
-| 192.168.56.2 | dc.example.com            | Domain Controller Computer |
-| 192.168.56.3 | test-node-one.example.com | Test Computer              |
-
-**NB** these are hardcoded in several files. Find then with `grep -r 192.168.56. .`.
-
-Install the [base box](https://github.com/rgl/windows-2016-vagrant).
+This will create an `lab.local` Active Directory Domain Forest. Change the locate, timezone and domain name in the provisioner.
 
 Install the required Vagrant plugins:
 
@@ -33,27 +18,15 @@ Start by launching the Domain Controller environment:
 vagrant up
 ```
 
-Launch the Test Node One Computer environment:
-
-```bash
-cd test-node-one
-vagrant up
-```
-
-Sign-in on the Test Node One Computer with one of the following accounts:
-
-* Username `john.doe` and password `HeyH0Password`.
+* Username `Administrator` and password `Passw0rd`.
   * This account is also a Domain Administrator.
-* Username `jane.doe` and password `HeyH0Password`.
-* Username `Administrator` and password `HeyH0Password`.
-  * This account is also a Domain Administrator.
-* Username `.\vagrant` and password `password`.
+* Username `.\vagrant` and password `vagrant`.
   * **NB** you MUST use the **local** `vagrant` account. because the domain also has a `vagrant` account, and that will mess-up the local one...
 
 
 # Active Directory LDAP
 
-You can use a normal LDAP client for acessing the Active Directory.
+You can use a normal LDAP client for accessing the Active Directory. Replace example.com as per your domain name configured above
 
 It accepts the following _Bind DN_ formats:
 
@@ -73,13 +46,13 @@ Some attributes are available in environment variables:
 | `NETBIOS domain` | `USERDOMAIN`         | `EXAMPLE`           |
 | `DNS domain`     | `USERDNSDOMAIN`      | `EXAMPLE.COM`       |
 
-You can list all of the active users using [ldapsearch](http://www.openldap.org/software/man.cgi?query=ldapsearch) as: 
+You can list all of the active users using [ldapsearch](http://www.openldap.org/software/man.cgi?query=ldapsearch) as:
 
 ```bash
 ldapsearch \
   -H ldap://dc.example.com \
   -D jane.doe@example.com \
-  -w HeyH0Password \
+  -w Passw0rd \
   -x -LLL \
   -b CN=Users,DC=example,DC=com \
   '(&(objectClass=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))' \

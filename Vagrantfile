@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
-    config.vm.box = "windows-2016-amd64"
-    config.vm.define "windows-domain-controller"
+    config.vm.box = "windows_2016"
+    config.vm.define "windows-lab-dc"
     config.vm.hostname = "dc"
 
     # use the plaintext WinRM transport and force it to use basic authentication.
@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider :virtualbox do |v, override|
         v.linked_clone = true
         v.cpus = 2
-        v.memory = 2048
+        v.memory = 512
         v.customize ["modifyvm", :id, "--vram", 64]
         v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
         v.customize ["storageattach", :id,
@@ -24,16 +24,16 @@ Vagrant.configure("2") do |config|
                         "--medium", "emptydrive"]
     end
 
-    config.vm.network "private_network", ip: "192.168.56.2"
+    config.vm.network "private_network", ip: "192.168.56.4"
 
-    config.vm.provision "shell", inline: "$env:chocolateyVersion='0.10.8'; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex", name: "Install Chocolatey"
-    config.vm.provision "shell", path: "provision/ps.ps1", args: "provision-base.ps1"
+    config.vm.provision "shell", inline: "$env:chocolateyVersion='0.10.8'; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex", name: "Install Chocolatey"    
+    config.vm.provision "shell", path: "provision/provision-base.ps1", args: "-locale en-AU -timezone \"AUS Eastern Standard Time\""
     config.vm.provision "reload"
-    config.vm.provision "shell", path: "provision/ps.ps1", args: "domain-controller.ps1"
+    config.vm.provision "shell", path: "provision/domain-controller.ps1", args: "-domain lab.local -netbiosDomain lab"
     config.vm.provision "reload"
-    config.vm.provision "shell", path: "provision/ps.ps1", args: "domain-controller-configure.ps1"
-    config.vm.provision "shell", path: "provision/ps.ps1", args: "ad-explorer.ps1"
-    config.vm.provision "shell", path: "provision/ps.ps1", args: "ca.ps1"
+    config.vm.provision "shell", path: "provision/domain-controller-configure.ps1"
+    #config.vm.provision "shell", path: "provision/ps.ps1", args: "ad-explorer.ps1"
+    #config.vm.provision "shell", path: "provision/ps.ps1", args: "ca.ps1"
     config.vm.provision "reload"
     config.vm.provision "shell", path: "provision/ps.ps1", args: "summary.ps1"
 end
