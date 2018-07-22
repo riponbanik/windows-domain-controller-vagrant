@@ -23,6 +23,15 @@ vagrant up
 * Username `.\vagrant` and password `vagrant`.
   * **NB** you MUST use the **local** `vagrant` account. because the domain also has a `vagrant` account, and that will mess-up the local one...
 
+# Using Remote Service Administrator Toolkit (RSAT)
+To use RSAT remotely from non-windows join machine and as different user, add the following command in a .bat file and run it
+
+```
+@echo off
+runas /netonly /user:lab\administrator "mmc /server=dc.lab.local"
+```
+
+It will open mmc conosle, from there select the snap-in you would like to use e.g. Active Directory Users and Computers
 
 # Active Directory LDAP
 
